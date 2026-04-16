@@ -1,0 +1,218 @@
+{
+  "clients": [
+    {
+      "id": 1,
+      "name": "Артём Белов",
+      "email": "artem@startup.io",
+      "company": "StartupIO",
+      "phone": "+7 900 123-45-67",
+      "service": "Web Development",
+      "plan": "Pro",
+      "status": "active",
+      "budget": 150000,
+      "paid": 150000,
+      "currency": "RUB",
+      "createdAt": "2024-11-10",
+      "deadline": "2025-02-28",
+      "notes": "Нужен редизайн лендинга + интеграция CRM"
+    },
+    {
+      "id": 2,
+      "name": "Светлана Кравченко",
+      "email": "sveta@designco.ru",
+      "company": "DesignCo",
+      "phone": "+7 911 234-56-78",
+      "service": "UI/UX Design",
+      "plan": "Basic",
+      "status": "pending",
+      "budget": 60000,
+      "paid": 0,
+      "currency": "RUB",
+      "createdAt": "2024-12-01",
+      "deadline": "2025-01-31",
+      "notes": "Ожидает подписания договора"
+    },
+    {
+      "id": 3,
+      "name": "Николай Орлов",
+      "email": "nikolay@fintech.com",
+      "company": "FinTech Ltd",
+      "phone": "+7 922 345-67-89",
+      "service": "Mobile App",
+      "plan": "Enterprise",
+      "status": "active",
+      "budget": 400000,
+      "paid": 200000,
+      "currency": "RUB",
+      "createdAt": "2024-10-05",
+      "deadline": "2025-04-30",
+      "notes": "iOS + Android приложение для учёта финансов"
+    },
+    {
+      "id": 4,
+      "name": "Дарья Миронова",
+      "email": "dasha@ecom.shop",
+      "company": "EcomShop",
+      "phone": "+7 933 456-78-90",
+      "service": "Web Development",
+      "plan": "Pro",
+      "status": "completed",
+      "budget": 120000,
+      "paid": 120000,
+      "currency": "RUB",
+      "createdAt": "2024-09-01",
+      "deadline": "2024-12-01",
+      "notes": "Интернет-магазин на React + Node.js. Проект закрыт."
+    },
+    {
+      "id": 5,
+      "name": "Игорь Павлов",
+      "email": "igor@mediahouse.ru",
+      "company": "MediaHouse",
+      "phone": "+7 944 567-89-01",
+      "service": "SEO & Marketing",
+      "plan": "Basic",
+      "status": "paused",
+      "budget": 45000,
+      "paid": 22500,
+      "currency": "RUB",
+      "createdAt": "2024-11-20",
+      "deadline": "2025-03-01",
+      "notes": "Приостановлен по просьбе клиента до января"
+    },
+    {
+      "id": 6,
+      "name": "Анна Зубова",
+      "email": "anna@legal.pro",
+      "company": "LegalPro",
+      "phone": "+7 955 678-90-12",
+      "service": "Web Development",
+      "plan": "Basic",
+      "status": "active",
+      "budget": 80000,
+      "paid": 40000,
+      "currency": "RUB",
+      "createdAt": "2024-12-10",
+      "deadline": "2025-02-15",
+      "notes": "Корпоративный сайт для юридической компании"
+    },
+    {
+      "id": 7,
+      "name": "Максим Громов",
+      "email": "max@saas.dev",
+      "company": "SaaS.dev",
+      "phone": "+7 966 789-01-23",
+      "service": "Mobile App",
+      "plan": "Enterprise",
+      "status": "pending",
+      "budget": 280000,
+      "paid": 0,
+      "currency": "RUB",
+      "createdAt": "2025-01-02",
+      "deadline": "2025-06-30",
+      "notes": "SaaS-дашборд с аналитикой. Обсуждение ТЗ."
+    },
+    {
+      "name": "Alibek",
+      "email": "alibek@gmail.com",
+      "company": "Ala-Too",
+      "phone": "+996225452254",
+      "service": "Web Development",
+      "plan": "Enterprise",
+      "status": "active",
+      "budget": 500000,
+      "deadline": "2026-05-29",
+      "notes": "",
+      "createdAt": "2026-04-09",
+      "paid": 0,
+      "id": 8
+    }
+  ],
+  "interactions": [
+    {
+      "id": 1,
+      "clientId": 1,
+      "type": "call",
+      "text": "Обсудили правки по дизайну главной страницы",
+      "date": "2025-01-05"
+    },
+    {
+      "id": 2,
+      "clientId": 1,
+      "type": "email",
+      "text": "Отправил обновлённые макеты на согласование",
+      "date": "2025-01-07"
+    },
+    {
+      "id": 3,
+      "clientId": 1,
+      "type": "payment",
+      "text": "Получена первая часть оплаты — 75 000 ₽",
+      "date": "2024-11-15"
+    },
+    {
+      "id": 4,
+      "clientId": 2,
+      "type": "meeting",
+      "text": "Онлайн-встреча, обсудили объём работ",
+      "date": "2024-12-05"
+    },
+    {
+      "id": 5,
+      "clientId": 3,
+      "type": "payment",
+      "text": "Получена предоплата — 200 000 ₽",
+      "date": "2024-10-10"
+    },
+    {
+      "id": 6,
+      "clientId": 3,
+      "type": "call",
+      "text": "Демо первой версии iOS-приложения",
+      "date": "2025-01-08"
+    },
+    {
+      "id": 7,
+      "clientId": 4,
+      "type": "payment",
+      "text": "Финальный расчёт — 60 000 ₽",
+      "date": "2024-12-03"
+    },
+    {
+      "id": 8,
+      "clientId": 6,
+      "type": "email",
+      "text": "Согласован контент для главной страницы",
+      "date": "2024-12-15"
+    },
+    {
+      "clientId": 1,
+      "type": "payment",
+      "text": "75000",
+      "date": "2026-04-09",
+      "id": 9
+    }
+  ],
+  "services": [
+    {
+      "id": 1,
+      "name": "Web Development"
+    },
+    {
+      "id": 2,
+      "name": "UI/UX Design"
+    },
+    {
+      "id": 3,
+      "name": "Mobile App"
+    },
+    {
+      "id": 4,
+      "name": "SEO & Marketing"
+    },
+    {
+      "id": 5,
+      "name": "Consulting"
+    }
+  ]
+}
