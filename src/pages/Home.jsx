@@ -49,8 +49,8 @@ export default function Home() {
     <div style={s.page}>
       <p style={s.tag}>// freelance crm</p>
       <h1 style={s.title}>
-        Привет,{" "}
-        <span style={{ color: "#4f8ef7" }}>Фрилансер</span>
+        {" "}
+        <span style={{ color: "#4f8ef7" }}>Привет Фрилансер</span>
       </h1>
       <p style={s.sub}>
         Управляй клиентами, отслеживай оплаты и дедлайны в одном месте.

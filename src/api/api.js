@@ -1,4 +1,4 @@
-const BASE = "http://localhost:3001";
+const BASE = "/api";
 
 export const fetchClients = () =>
   fetch(`${BASE}/clients`).then(r => r.json());
