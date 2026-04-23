@@ -13,13 +13,13 @@ export default function Navbar() {
   const isActive = (to, exact) => exact ? pathname === to : pathname.startsWith(to);
 
   return (
-    <nav style={s.nav}>
-      <div style={s.logo}>◉ FreelanceCRM</div>
-      <div style={s.links}>
-        <Link to="/" style={{ ...s.link, ...(isActive("/", true) ? s.active : {}) }}>Главная</Link>
-        <Link to="/clients" style={{ ...s.link, ...(isActive("/clients") ? s.active : {}) }}>Клиенты</Link>
+    <nav style={s.nav} className="nav-container">
+      <div style={s.logo} className="nav-logo">◉ FreelanceCRM</div>
+      <div style={s.links} className="nav-links">
+        <Link to="/" style={{ ...s.link, ...(isActive("/", true) ? s.active : {}) }} className="nav-link">Главная</Link>
+        <Link to="/clients" style={{ ...s.link, ...(isActive("/clients") ? s.active : {}) }} className="nav-link">Клиенты</Link>
         {isAdmin && (
-          <Link to="/admin" style={{ ...s.link, ...(isActive("/admin") ? s.active : {}) }}>Admin</Link>
+          <Link to="/admin" style={{ ...s.link, ...(isActive("/admin") ? s.active : {}) }} className="nav-link">Admin</Link>
         )}
       </div>
       <div style={s.right}>
@@ -27,10 +27,10 @@ export default function Navbar() {
           {dark ? "☀" : "☽"}
         </button>
         <div style={s.userInfo}>
-          <span style={s.userName}>{user?.name}</span>
+          <span style={s.userName} className="nav-user-name">{user?.name}</span>
           {isAdmin && <span style={s.adminBadge}>admin</span>}
         </div>
-        <button style={s.logoutBtn} onClick={handleLogout}>Выйти</button>
+        <button style={s.logoutBtn} onClick={handleLogout} className="nav-logout-btn">Выйти</button>
       </div>
     </nav>
   );

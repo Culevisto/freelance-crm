@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchClients } from "../api/api";
+import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState";
 
 const STATUS_LABEL = {
   active: "Активные",
@@ -19,12 +21,20 @@ const STATUS_COLOR = {
 export default function Home() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const loadData = () => {
+    setLoading(true);
+    setError(null);
     fetchClients()
       .then(setClients)
+      .catch(err => setError(err.message || "Ошибка загрузки"))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
 
   const totalBudget = clients.reduce((s, c) => s + (c.budget || 0), 0);
@@ -46,7 +56,7 @@ export default function Home() {
     .slice(0, 4);
 
   return (
-    <div style={s.page}>
+    <div style={s.page} className="page-container">
       <p style={s.tag}>// freelance crm</p>
       <h1 style={s.title}>
         {" "}
@@ -57,11 +67,13 @@ export default function Home() {
       </p>
 
       {loading ? (
-        <p style={{ color: "#7a84a0", fontSize: 14 }}>Загрузка...</p>
+        <LoadingState />
+      ) : error ? (
+        <ErrorState message={error} onRetry={loadData} />
       ) : (
         <>
           {/* Stats */}
-          <div style={s.statsGrid}>
+          <div style={s.statsGrid} className="responsive-grid-3">
             {[
               { label: "Всего клиентов", value: clients.length },
               { label: "Активные проекты", value: activeCount },
@@ -112,7 +124,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
+          <div style={{ display: "flex", gap: 12, marginTop: 8 }} className="responsive-flex">
             <button style={s.btnPrimary} onClick={() => navigate("/clients")}>
               Все клиенты →
             </button>

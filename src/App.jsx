@@ -5,6 +5,7 @@ import Clients from "./pages/Clients";
 import Details from "./pages/Details";
 import Admin from "./pages/Admin";
 import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
 import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                   <Admin />
                 </AdminRoute>
               } />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </ProtectedRoute>
         } />

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchClients } from "../api/api";
+import LoadingState from "../components/LoadingState";
+import EmptyState from "../components/EmptyState";
+import ErrorState from "../components/ErrorState";
 
 const STATUS_COLOR = {
   active:    { bg: "rgba(29,158,117,0.12)",  color: "#1D9E75" },
@@ -15,10 +18,20 @@ export default function Clients() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const loadData = () => {
+    setLoading(true);
+    setError(null);
+    fetchClients()
+      .then(setAll)
+      .catch(err => setError(err.message || "Ошибка загрузки"))
+      .finally(() => setLoading(false));
+  };
+
   useEffect(() => {
-    fetchClients().then(setAll).finally(() => setLoading(false));
+    loadData();
   }, []);
 
   const filtered = all.filter(c => {
@@ -34,14 +47,14 @@ export default function Clients() {
   const pct = (paid, budget) => budget > 0 ? Math.round((paid / budget) * 100) : 0;
 
   return (
-    <div style={s.page}>
+    <div style={s.page} className="page-container">
       <div style={s.header}>
         <h2 style={s.title}>Клиенты</h2>
         <span style={s.badge}>{filtered.length} из {all.length}</span>
       </div>
 
       {/* Toolbar */}
-      <div style={s.toolbar}>
+      <div style={s.toolbar} className="responsive-toolbar">
         <div style={s.searchWrap}>
           <span style={s.searchIcon}>⌕</span>
           <input
@@ -51,7 +64,7 @@ export default function Clients() {
             onChange={e => setSearch(e.target.value)}
           />
         </div>
-        <div style={s.filters}>
+        <div style={s.filters} className="responsive-filters">
           {["all", "active", "pending", "paused", "completed"].map(st => (
             <button
               key={st}
@@ -65,9 +78,11 @@ export default function Clients() {
       </div>
 
       {loading ? (
-        <p style={{ color: "#7a84a0", fontSize: 14, marginTop: 24 }}>Загрузка...</p>
+        <LoadingState />
+      ) : error ? (
+        <ErrorState message={error} onRetry={loadData} />
       ) : filtered.length === 0 ? (
-        <p style={{ color: "#7a84a0", fontSize: 14, marginTop: 24 }}>Ничего не найдено</p>
+        <EmptyState title="Клиенты не найдены" message="Попробуйте изменить параметры поиска или фильтры" />
       ) : (
         <div style={s.list}>
           {filtered.map(c => {
@@ -81,18 +96,18 @@ export default function Clients() {
                 onMouseEnter={e => e.currentTarget.style.borderColor = "#4f8ef7"}
                 onMouseLeave={e => e.currentTarget.style.borderColor = "#1e2230"}
               >
-                <div style={s.cardTop}>
+                <div style={s.cardTop} className="responsive-card-top">
                   <div style={s.avatar}>{c.name[0]}</div>
                   <div style={{ flex: 1 }}>
                     <div style={s.name}>{c.name}</div>
                     <div style={s.meta}>{c.company} · {c.service}</div>
                   </div>
-                  <div style={{ ...s.statusPill, ...sc }}>
+                  <div style={{ ...s.statusPill, ...sc }} className="responsive-status-pill">
                     {STATUS_LABEL[c.status] || c.status}
                   </div>
                 </div>
 
-                <div style={s.cardMid}>
+                <div style={s.cardMid} className="responsive-grid-4">
                   <div style={s.metaItem}>
                     <span style={s.metaLabel}>Бюджет</span>
                     <span style={s.metaVal}>{fmt(c.budget)}</span>

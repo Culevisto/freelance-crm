@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchClients, createClient, updateClient, deleteClient } from "../api/api";
+import LoadingState from "../components/LoadingState";
+import EmptyState from "../components/EmptyState";
+import ErrorState from "../components/ErrorState";
 
 const STATUSES = ["active", "pending", "paused", "completed"];
 const STATUS_LABEL = { active: "Активный", pending: "Ожидание", completed: "Завершён", paused: "Пауза" };
@@ -17,14 +20,24 @@ const EMPTY_FORM = { name: "", email: "", company: "", phone: "", service: "Web 
 export default function Admin() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [modal, setModal] = useState(null); // null | "create" | "edit" | "delete"
   const [selected, setSelected] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [search, setSearch] = useState("");
 
+  const loadData = () => {
+    setLoading(true);
+    setError(null);
+    fetchClients()
+      .then(setClients)
+      .catch(err => setError(err.message || "Ошибка загрузки данных"))
+      .finally(() => setLoading(false));
+  };
+
   useEffect(() => {
-    fetchClients().then(setClients).finally(() => setLoading(false));
+    loadData();
   }, []);
 
   const filtered = clients.filter(c =>
@@ -63,8 +76,8 @@ export default function Admin() {
   const totalPaid = clients.reduce((s, c) => s + (c.paid || 0), 0);
 
   return (
-    <div style={s.page}>
-      <div style={s.header}>
+    <div style={s.page} className="page-container">
+      <div style={s.header} className="responsive-toolbar">
         <div>
           <h2 style={s.title}>Admin Panel</h2>
           <p style={s.subtitle}>Управление клиентами и проектами</p>
@@ -73,7 +86,7 @@ export default function Admin() {
       </div>
 
       {/* Summary */}
-      <div style={s.summaryRow}>
+      <div style={s.summaryRow} className="responsive-grid-4">
         {[
           ["Клиентов", clients.length],
           ["Активных", clients.filter(c => c.status === "active").length],
@@ -101,7 +114,11 @@ export default function Admin() {
 
       {/* Table */}
       {loading ? (
-        <p style={{ color: "#7a84a0", fontSize: 14, marginTop: 20 }}>Загрузка...</p>
+        <LoadingState />
+      ) : error ? (
+        <ErrorState message={error} onRetry={loadData} />
+      ) : filtered.length === 0 ? (
+        <EmptyState title="Нет клиентов" message="Список клиентов пуст или не найден по запросу" />
       ) : (
         <div style={s.tableWrap}>
           <table style={s.table}>
@@ -169,7 +186,7 @@ export default function Admin() {
             ) : (
               <>
                 <div style={s.modalTitle}>{modal === "create" ? "Новый клиент" : "Редактировать клиента"}</div>
-                <div style={s.formGrid}>
+                <div style={s.formGrid} className="responsive-grid-2">
                   {[
                     ["name", "Имя *", "text"],
                     ["email", "Email *", "email"],

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchClient, fetchInteractions, createInteraction, deleteInteraction, updateClient } from "../api/api";
+import LoadingState from "../components/LoadingState";
+import ErrorState from "../components/ErrorState";
 
 const STATUS_COLOR = {
   active:    { bg: "rgba(29,158,117,0.12)",  color: "#1D9E75" },
@@ -20,15 +22,23 @@ export default function Details() {
   const [client, setClient] = useState(null);
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const loadData = () => {
+    setLoading(true);
+    setError(null);
+    Promise.all([fetchClient(id), fetchInteractions(id)])
+      .then(([c, i]) => { setClient(c); setInteractions(i); })
+      .catch(err => setError(err.message || "Ошибка загрузки деталей"))
+      .finally(() => setLoading(false));
+  };
 
   const [newNote, setNewNote] = useState("");
   const [noteType, setNoteType] = useState("note");
   const [addingNote, setAddingNote] = useState(false);
 
   useEffect(() => {
-    Promise.all([fetchClient(id), fetchInteractions(id)])
-      .then(([c, i]) => { setClient(c); setInteractions(i); })
-      .finally(() => setLoading(false));
+    loadData();
   }, [id]);
 
   const handleAddInteraction = async () => {
@@ -64,18 +74,19 @@ export default function Details() {
     setClient(updated);
   };
 
-  if (loading) return <p style={{ padding: 40, color: "#7a84a0" }}>Загрузка...</p>;
-  if (!client) return <p style={{ padding: 40, color: "#e87979" }}>Клиент не найден</p>;
+  if (loading) return <LoadingState />;
+  if (error) return <ErrorState message={error} onRetry={loadData} />;
+  if (!client) return <ErrorState message="Клиент не найден" />;
 
   const fmt = (n) => (n || 0).toLocaleString("ru-RU") + " ₽";
   const pct = client.budget > 0 ? Math.round((client.paid / client.budget) * 100) : 0;
   const sc = STATUS_COLOR[client.status] || STATUS_COLOR.paused;
 
   return (
-    <div style={s.page}>
+    <div style={s.page} className="page-container">
       <button style={s.back} onClick={() => navigate("/clients")}>← Назад к клиентам</button>
 
-      <div style={s.grid}>
+      <div style={s.grid} className="responsive-details-grid">
         {/* LEFT: client info */}
         <div style={s.left}>
           {/* Header card */}
