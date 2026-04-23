@@ -30,9 +30,7 @@ export default function Clients() {
       .finally(() => setLoading(false));
   };
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  useEffect(() => { loadData(); }, []);
 
   const filtered = all.filter(c => {
     const matchSearch =
@@ -59,7 +57,7 @@ export default function Clients() {
           <span style={s.searchIcon}>⌕</span>
           <input
             style={s.search}
-            placeholder="Поиск по имени, компании, email..."
+            placeholder="Поиск..."
             value={search}
             onChange={e => setSearch(e.target.value)}
           />
@@ -96,9 +94,10 @@ export default function Clients() {
                 onMouseEnter={e => e.currentTarget.style.borderColor = "#4f8ef7"}
                 onMouseLeave={e => e.currentTarget.style.borderColor = "#1e2230"}
               >
+                {/* Top row: avatar + name + status */}
                 <div style={s.cardTop} className="responsive-card-top">
                   <div style={s.avatar}>{c.name[0]}</div>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={s.name}>{c.name}</div>
                     <div style={s.meta}>{c.company} · {c.service}</div>
                   </div>
@@ -107,7 +106,8 @@ export default function Clients() {
                   </div>
                 </div>
 
-                <div style={s.cardMid} className="responsive-grid-4">
+                {/* Mid stats — using CSS class for responsive grid */}
+                <div className="card-mid-grid">
                   <div style={s.metaItem}>
                     <span style={s.metaLabel}>Бюджет</span>
                     <span style={s.metaVal}>{fmt(c.budget)}</span>
@@ -143,25 +143,33 @@ export default function Clients() {
 }
 
 const s = {
-  page: { maxWidth: 900, margin: "0 auto", padding: "36px 28px 60px" },
+  page: { maxWidth: 900, margin: "0 auto", padding: "36px 24px 60px" },
   header: { display: "flex", alignItems: "center", gap: 14, marginBottom: 24 },
   title: { fontSize: 24, fontWeight: 600, color: "#e4e8f0", letterSpacing: "-0.02em" },
   badge: { fontFamily: "monospace", fontSize: 11, color: "#7a84a0", background: "#13161e", border: "1px solid #1e2230", padding: "3px 10px", borderRadius: 20 },
   toolbar: { display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap" },
   searchWrap: { flex: 1, minWidth: 200, background: "#13161e", border: "1px solid #1e2230", borderRadius: 8, padding: "0 12px", display: "flex", alignItems: "center", gap: 8, height: 38 },
   searchIcon: { color: "#7a84a0", fontSize: 16 },
-  search: { flex: 1, background: "transparent", border: "none", outline: "none", fontSize: 13, color: "#e4e8f0", fontFamily: "inherit" },
-  filters: { display: "flex", gap: 4 },
-  filterBtn: { background: "transparent", border: "1px solid #1e2230", borderRadius: 7, padding: "6px 12px", fontSize: 12, color: "#7a84a0", cursor: "pointer", transition: "all 0.15s" },
+  search: { flex: 1, background: "transparent", border: "none", outline: "none", fontSize: 13, color: "#e4e8f0", fontFamily: "inherit", minWidth: 0 },
+  filters: { display: "flex", gap: 4, flexWrap: "wrap" },
+  filterBtn: { background: "transparent", border: "1px solid #1e2230", borderRadius: 7, padding: "6px 12px", fontSize: 12, color: "#7a84a0", cursor: "pointer", transition: "all 0.15s", whiteSpace: "nowrap" },
   filterActive: { borderColor: "#4f8ef7", color: "#4f8ef7", background: "rgba(79,142,247,0.08)" },
   list: { display: "flex", flexDirection: "column", gap: 10 },
-  card: { background: "#13161e", border: "1px solid #1e2230", borderRadius: 12, padding: "16px 20px", cursor: "pointer", transition: "border-color 0.15s" },
+  card: {
+    background: "#13161e",
+    border: "1px solid #1e2230",
+    borderRadius: 12,
+    padding: "16px",
+    cursor: "pointer",
+    transition: "border-color 0.15s",
+    width: "100%",
+    boxSizing: "border-box",
+  },
   cardTop: { display: "flex", alignItems: "center", gap: 12, marginBottom: 14 },
   avatar: { width: 38, height: 38, borderRadius: "50%", background: "rgba(79,142,247,0.12)", color: "#4f8ef7", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600, fontSize: 15, flexShrink: 0 },
-  name: { fontSize: 14, fontWeight: 500, color: "#e4e8f0", marginBottom: 2 },
-  meta: { fontSize: 12, color: "#7a84a0" },
-  statusPill: { fontSize: 11, fontWeight: 500, padding: "3px 10px", borderRadius: 20, whiteSpace: "nowrap" },
-  cardMid: { display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 14 },
+  name: { fontSize: 14, fontWeight: 500, color: "#e4e8f0", marginBottom: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  meta: { fontSize: 12, color: "#7a84a0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" },
+  statusPill: { fontSize: 11, fontWeight: 500, padding: "3px 10px", borderRadius: 20, whiteSpace: "nowrap", flexShrink: 0 },
   metaItem: { display: "flex", flexDirection: "column", gap: 3 },
   metaLabel: { fontSize: 10, color: "#7a84a0", textTransform: "uppercase", letterSpacing: "0.07em" },
   metaVal: { fontSize: 13, fontWeight: 500, color: "#e4e8f0", fontFamily: "monospace" },
